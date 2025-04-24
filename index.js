@@ -1,30 +1,3 @@
-document.getElementById("form").addEventListener("submit",function(event){
-    event.preventDefault();
-    storeData();
-})
-
-variables=[];
-
-function storeData(){
-    let name = document.getElementById("name").value;
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
-    let DOB = document.getElementById("DOB").value;
-    let terms = document.getElementById("terms").checked;
-
-    const userData={
-        name,
-        email,
-        password,
-        DOB,
-        terms,
-    }
-     const stringified=JSON.stringify(userData);
-     variables.push(stringified);
-     console.log(variables);
-     localStorage.setItem("user",variables);
-}
-
 document.getElementById("form").addEventListener("submit", function(event) {
     event.preventDefault();
     retrieveData();
@@ -35,14 +8,14 @@ function retrieveData() {
     let name = document.getElementById("name").value;
     let email = document.getElementById("email").value;
     let password = document.getElementById("password").value;
-    let DOB = document.getElementById("DOB").value;
+    let dob = document.getElementById("dob").value;
     let terms = document.getElementById("terms").checked;
 
     const userData = {
         name,
         email,
         password,
-        DOB,
+        dob,
         terms
     };
 
@@ -75,7 +48,7 @@ function updateEntriesList() {
         tableRow.appendChild(passwordCell);
 
         let dobCell = document.createElement("td");
-        dobCell.textContent = data.DOB;
+        dobCell.textContent = data.dob;
         tableRow.appendChild(dobCell);
 
         let termsCell = document.createElement("td");
