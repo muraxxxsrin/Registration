@@ -1,4 +1,4 @@
-document.querySelector("form").addEventListener("submit", function (event) {
+document.getElementById("form").addEventListener("submit", function (event) {
     event.preventDefault();
 
     let name = document.getElementById("name").value;
@@ -20,10 +20,12 @@ document.querySelector("form").addEventListener("submit", function (event) {
     localStorage.setItem("userList", JSON.stringify(storedData));
 
     updateEntriesList();
-    document.querySelector("form").reset();
+     
 });
 
-window.onload = updateEntriesList;
+window.onload = function () {
+    updateEntriesList(); 
+};
 
 function calculateAge(dob) {
     const birthDate = new Date(dob);
@@ -43,15 +45,13 @@ function updateEntriesList() {
 
     storedData.forEach((data) => {
         let tableRow = document.createElement("tr");
-
         tableRow.innerHTML = `
             <td>${data.name}</td>
             <td>${data.email}</td>
             <td>${data.password}</td>
             <td>${data.dob}</td>
-            <td>${data.terms ? "True" : "False"}</td>
+            <td>${data.terms ? "true" : "false"}</td>
         `;
-
         tableBody.appendChild(tableRow);
     });
 }
