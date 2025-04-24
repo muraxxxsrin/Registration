@@ -1,28 +1,6 @@
-document.getElementById("form").addEventListener("submit", function(event) {
+document.querySelector("form").addEventListener("submit", function (event) {
     event.preventDefault();
-    retrieveData();
-    updateEntriesList();
-});
 
-window.onload = updateEntriesList;
-
-function calculateAge(dob) {
-    const birthDate = new Date(dob);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-
-    if (
-        monthDiff < 0 ||
-        (monthDiff === 0 && today.getDate() < birthDate.getDate())
-    ) {
-        age--;
-    }
-
-    return age;
-}
-
-function retrieveData() {
     let name = document.getElementById("name").value;
     let email = document.getElementById("email").value;
     let password = document.getElementById("password").value;
@@ -35,17 +13,27 @@ function retrieveData() {
         return;
     }
 
-    const userData = {
-        name,
-        email,
-        password,
-        dob,
-        terms
-    };
+    const userData = { name, email, password, dob, terms };
 
     let storedData = JSON.parse(localStorage.getItem("userList")) || [];
     storedData.push(userData);
     localStorage.setItem("userList", JSON.stringify(storedData));
+
+    updateEntriesList();
+    document.querySelector("form").reset();
+});
+
+window.onload = updateEntriesList;
+
+function calculateAge(dob) {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
 }
 
 function updateEntriesList() {
@@ -56,25 +44,13 @@ function updateEntriesList() {
     storedData.forEach((data) => {
         let tableRow = document.createElement("tr");
 
-        let nameCell = document.createElement("td");
-        nameCell.textContent = data.name;
-        tableRow.appendChild(nameCell);
-
-        let emailCell = document.createElement("td");
-        emailCell.textContent = data.email;
-        tableRow.appendChild(emailCell);
-
-        let passwordCell = document.createElement("td");
-        passwordCell.textContent = data.password;
-        tableRow.appendChild(passwordCell);
-
-        let dobCell = document.createElement("td");
-        dobCell.textContent = data.dob;
-        tableRow.appendChild(dobCell);
-
-        let termsCell = document.createElement("td");
-        termsCell.textContent = data.terms ? "True" : "False";
-        tableRow.appendChild(termsCell);
+        tableRow.innerHTML = `
+            <td>${data.name}</td>
+            <td>${data.email}</td>
+            <td>${data.password}</td>
+            <td>${data.dob}</td>
+            <td>${data.terms ? "True" : "False"}</td>
+        `;
 
         tableBody.appendChild(tableRow);
     });
